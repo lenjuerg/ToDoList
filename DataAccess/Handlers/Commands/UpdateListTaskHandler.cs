@@ -33,7 +33,7 @@ namespace DataAccess.Handlers.Commands
                 throw new Exception("Task not found.");
 
             task.Description = request.update.Description;
-            task.DueDateTime = new DateTime(request.update.DueDate, request.update.DueTime, DateTimeKind.Utc);
+            task.DueDateTime = request.update.DueDateTime.UtcDateTime;
             task.Finished = request.update.Finished;
             await _context.SaveChangesAsync();
         }

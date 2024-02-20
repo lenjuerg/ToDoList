@@ -31,7 +31,7 @@ namespace DataAccess.Handlers.Commands
             {
                 ToDoListId = request.newTask.ToDoListId,
                 Description = request.newTask.Description,
-                DueDateTime = new DateTime(request.newTask.DueDate, request.newTask.DueTime, DateTimeKind.Utc),
+                DueDateTime = request.newTask.DueDateTime.UtcDateTime,
                 Finished = request.newTask.Finished,
             };
 

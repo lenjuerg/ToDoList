@@ -9,11 +9,9 @@ namespace DataAccess.Handlers.Queries
     public class GetToDoListByIdHandler : IRequestHandler<GetToDoListByIdQuery, GetToDoListDto>
     {
         private readonly DataContext _context;
-        private readonly IUserIdentityService _identity;
-        public GetToDoListByIdHandler(DataContext context, IUserIdentityService identity)
+        public GetToDoListByIdHandler(DataContext context)
         {
             _context = context;
-            _identity = identity;
         }
 
         public async Task<GetToDoListDto> Handle(GetToDoListByIdQuery request, CancellationToken cancellationToken)
@@ -24,15 +22,10 @@ namespace DataAccess.Handlers.Queries
             if (request.id == 0)
                 throw new ArgumentException("Id is empty.");
 
-            var userId = _identity.GetUserId();
-
             var list = await _context.ToDoLists.FindAsync(request.id);
 
             if (list is null)
                 throw new Exception("List not found.");
-
-            if (list.UserId != userId)
-                throw new UnauthorizedAccessException("List doesn't belong to user.");
 
             return new GetToDoListDto
             {

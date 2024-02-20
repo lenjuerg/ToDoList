@@ -9,12 +9,10 @@ namespace DataAccess.Handlers.Commands
     public class UpdateListTaskHandler : IRequestHandler<UpdateListTaskCommand>
     {
         private readonly DataContext _context;
-        private readonly IUserIdentityService _identity;
 
-        public UpdateListTaskHandler(DataContext context, IUserIdentityService identity)
+        public UpdateListTaskHandler(DataContext context)
         {
             _context = context;
-            _identity = identity;
         }
 
         public async Task Handle(UpdateListTaskCommand request, CancellationToken cancellationToken)
@@ -22,13 +20,8 @@ namespace DataAccess.Handlers.Commands
             if (request is null)
                 throw new ArgumentNullException(nameof(request));
 
-            var userId = _identity.GetUserId();
-
-            var task = await _context.ListTasks
-                .Include(t => t.ToDoList)
-                .Where(t => t.Id == request.update.Id && t.ToDoList.UserId == userId)
-                .FirstOrDefaultAsync();
-
+            var task = await _context.ListTasks.FindAsync(request.update.Id);
+            
             if (task is null)
                 throw new Exception("Task not found.");
 

@@ -8,12 +8,10 @@ namespace DataAccess.Handlers.Commands
     public class UpdateToDoListHandler : IRequestHandler<UpdateToDoListCommand>
     {
         private readonly DataContext _context;
-        private readonly IUserIdentityService _identity;
 
-        public UpdateToDoListHandler(DataContext context, IUserIdentityService identity)
+        public UpdateToDoListHandler(DataContext context)
         {
             _context = context;
-            _identity = identity;
         }
 
         public async Task Handle(UpdateToDoListCommand request, CancellationToken cancellationToken)
@@ -27,9 +25,6 @@ namespace DataAccess.Handlers.Commands
 
             if (list is null)
                 throw new ArgumentException("List not found.");
-
-            if (list.UserId != _identity.GetUserId())
-                throw new UnauthorizedAccessException();
 
             list.Name = request.updatedList.Name;
             list.Description = request.updatedList.Description;

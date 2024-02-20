@@ -10,11 +10,10 @@ namespace DataAccess.Handlers.Queries
     public class GetListTaskById : IRequestHandler<GetListTaskByIdQuery, GetListTaskDto>
     {
         private readonly DataContext _context;
-        private readonly IUserIdentityService _identity;
-        public GetListTaskById(DataContext context, IUserIdentityService identity)
+
+        public GetListTaskById(DataContext context)
         {
             _context = context;
-            _identity = identity;
         }
 
         public async Task<GetListTaskDto> Handle(GetListTaskByIdQuery request, CancellationToken cancellationToken)
@@ -22,13 +21,7 @@ namespace DataAccess.Handlers.Queries
             if (request is null)
                 throw new ArgumentNullException(nameof(request));
 
-            var userId = _identity.GetUserId();
-
-            var task = await _context.ListTasks
-                .AsNoTracking()
-                .Include(t => t.ToDoList)
-                .Where(t => t.Id == request.id && t.ToDoList.UserId == userId)
-                .FirstOrDefaultAsync();
+            var task = await _context.ListTasks.FindAsync(request.id);
 
             if (task is null)
                 throw new Exception("Task not found.");

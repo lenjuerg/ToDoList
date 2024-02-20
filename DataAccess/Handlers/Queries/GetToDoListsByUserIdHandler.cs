@@ -10,21 +10,19 @@ namespace DataAccess.Handlers.Queries
     public class GetToDoListsByUserIdHandler : IRequestHandler<GetToDoListsByUserIdQuery, List<GetToDoListDto>>
     {
         private readonly DataContext _context;
-        private readonly IUserIdentityService _identity;
 
-        public GetToDoListsByUserIdHandler(DataContext context, IUserIdentityService identity)
+        public GetToDoListsByUserIdHandler(DataContext context)
         {
             _context = context;
-            _identity = identity;
         }
 
         public async Task<List<GetToDoListDto>> Handle(GetToDoListsByUserIdQuery request, CancellationToken cancellationToken)
         {
-            var userId = _identity.GetUserId();
+            if (request is null)
+                throw new ArgumentNullException(nameof(request));
 
             return await _context.ToDoLists
                     .AsNoTracking()
-                    .Where(l => l.UserId == userId)
                     .Select(l => new GetToDoListDto
                     {
                         Id = l.Id,

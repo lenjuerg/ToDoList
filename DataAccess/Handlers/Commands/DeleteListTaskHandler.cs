@@ -9,12 +9,10 @@ namespace DataAccess.Handlers.Commands
     public class DeleteListTaskHandler : IRequestHandler<DeleteListTaskCommand>
     {
         private readonly DataContext _context;
-        private readonly IUserIdentityService _identity;
 
-        public DeleteListTaskHandler(DataContext context, IUserIdentityService identity)
+        public DeleteListTaskHandler(DataContext context)
         {
             _context = context;
-            _identity = identity;
         }
 
         public async Task Handle(DeleteListTaskCommand request, CancellationToken cancellationToken)
@@ -22,12 +20,7 @@ namespace DataAccess.Handlers.Commands
             if (request is null)
                 throw new ArgumentNullException(nameof(request));
 
-            var userId = _identity.GetUserId();
-
-            var task = await _context.ListTasks
-                .Include(t => t.ToDoList)
-                .Where(t => t.Id == request.id && t.ToDoList.UserId == userId)
-                .FirstOrDefaultAsync();
+            var task = await _context.ListTasks.FindAsync(request.id);
 
             if (task is null)
                 throw new Exception("Task not found.");

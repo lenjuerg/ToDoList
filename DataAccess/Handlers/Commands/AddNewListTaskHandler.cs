@@ -9,12 +9,10 @@ namespace DataAccess.Handlers.Commands
     public class AddNewListTaskHandler : IRequestHandler<AddNewListTaskCommand>
     {
         private readonly DataContext _context;
-        private readonly IUserIdentityService _identity;
 
-        public AddNewListTaskHandler(DataContext context, IUserIdentityService identity)
+        public AddNewListTaskHandler(DataContext context)
         {
             _context = context;
-            _identity = identity;
         }
 
         public async Task Handle(AddNewListTaskCommand request, CancellationToken cancellationToken)
@@ -23,9 +21,6 @@ namespace DataAccess.Handlers.Commands
 
             if (list is null)
                 throw new Exception("List not found.");
-
-            if (list.UserId != _identity.GetUserId())
-                throw new UnauthorizedAccessException();
 
             var newTask = new ListTask
             {

@@ -23,11 +23,9 @@ namespace DataAccess.Handlers.Commands
 
             if (request.newList.Name == string.Empty) throw new ArgumentException(nameof(request.newList));
 
-            var userId = _identity.GetUserId();
-
             var newList = new ToDoList
             {
-                UserId = userId,
+                UserId = _identity.GetUserId(),
                 Name = request.newList.Name,
                 Description = request.newList.Description,
                 Status = Status.Open

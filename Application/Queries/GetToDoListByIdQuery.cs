@@ -3,5 +3,5 @@ using MediatR;
 
 namespace Application.Queries
 {
-    public record GetToDoListByIdQuery(int id) : IRequest<GetToDoListDto>;
+    public record GetToDoListByIdQuery(int id) : IRequest<GetToDoListByIdDto>;
 }

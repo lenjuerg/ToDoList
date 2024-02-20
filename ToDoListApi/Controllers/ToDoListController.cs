@@ -22,7 +22,7 @@ namespace ToDoListApi.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult<List<GetToDoListDto>>> GetToDoListsByUserId()
+        public async Task<ActionResult<List<GetToDoListsByUserIdDto>>> GetToDoListsByUserId()
         {
             var lists = await _mediator.Send(new GetToDoListsByUserIdQuery());
             return Ok(lists);
@@ -30,7 +30,7 @@ namespace ToDoListApi.Controllers
 
         [HttpGet("id")]
         [Authorize]
-        public async Task<ActionResult<GetToDoListDto>> GetToDoListById(int id)
+        public async Task<ActionResult<GetToDoListByIdDto>> GetToDoListById(int id)
         {
             var list = await _mediator.Send(new GetToDoListByIdQuery(id));
             return Ok(list);

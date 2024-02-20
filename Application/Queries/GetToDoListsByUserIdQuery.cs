@@ -3,5 +3,5 @@ using MediatR;
 
 namespace Application.Commands
 {
-    public record GetToDoListsByUserIdQuery() : IRequest<List<GetToDoListDto>>;
+    public record GetToDoListsByUserIdQuery() : IRequest<List<GetToDoListsByUserIdDto>>;
 }

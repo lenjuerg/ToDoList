@@ -2,7 +2,7 @@
 
 namespace Application.Dto.Query
 {
-    public class GetToDoListDto
+    public class GetToDoListsByUserIdDto
     {
         public int Id { get; set; }
         public string? Name { get; set; }

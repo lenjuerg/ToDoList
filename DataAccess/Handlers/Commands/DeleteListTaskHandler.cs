@@ -3,6 +3,7 @@ using Application.Interfaces;
 using DataAccess.EfcCode;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using ToDoListApi.ExceptionHandling.Exceptions;
 
 namespace DataAccess.Handlers.Commands
 {
@@ -23,7 +24,7 @@ namespace DataAccess.Handlers.Commands
             var task = await _context.ListTasks.FindAsync(request.id);
 
             if (task is null)
-                throw new Exception("Task not found.");
+                throw new EntityNotFoundException("Task not found.");
 
             _context.ListTasks.Remove(task);
             await _context.SaveChangesAsync();

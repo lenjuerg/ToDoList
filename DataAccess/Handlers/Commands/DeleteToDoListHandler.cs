@@ -2,6 +2,7 @@
 using Application.Interfaces;
 using DataAccess.EfcCode;
 using MediatR;
+using ToDoListApi.ExceptionHandling.Exceptions;
 
 namespace DataAccess.Handlers.Commands
 {
@@ -22,7 +23,7 @@ namespace DataAccess.Handlers.Commands
             var list = await _context.ToDoLists.FindAsync(request.listId);
 
             if (list is null)
-                throw new ArgumentException("List not found.");
+                throw new EntityNotFoundException("List not found.");
 
             _context.ToDoLists.Remove(list);
             _context.SaveChanges();

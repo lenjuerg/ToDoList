@@ -2,7 +2,9 @@
 using Application.Interfaces;
 using DataAccess.EfcCode;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Models;
+using ToDoListApi.ExceptionHandling.Exceptions;
 
 namespace DataAccess.Handlers.Commands
 {
@@ -17,10 +19,12 @@ namespace DataAccess.Handlers.Commands
 
         public async Task Handle(AddNewListTaskCommand request, CancellationToken cancellationToken)
         {
-            var list = await _context.ToDoLists.FindAsync(request.newTask.ToDoListId);
+            var list = await _context.ToDoLists
+                .AsNoTracking()
+                .SingleOrDefaultAsync(l => l.Id == request.newTask.ToDoListId);
 
             if (list is null)
-                throw new Exception("List not found.");
+                throw new EntityNotFoundException("List not found.");
 
             var newTask = new ListTask
             {

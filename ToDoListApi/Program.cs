@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
+using ToDoListApi.ExceptionHandling;
 using ToDoListApi.Identity;
 
 
@@ -35,8 +36,12 @@ builder.Services.AddIdentityApiEndpoints<IdentityUser>()
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetToDoListsByUserIdHandler).Assembly));
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IUserIdentityService, HttpContextUserService>();
+builder.Services.AddExceptionHandler<RequestExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 var app = builder.Build();
+
+app.UseExceptionHandler();
 
 app.MapIdentityApi<IdentityUser>();
 

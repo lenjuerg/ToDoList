@@ -4,6 +4,7 @@ using Application.Queries;
 using DataAccess.EfcCode;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using ToDoListApi.ExceptionHandling.Exceptions;
 
 namespace DataAccess.Handlers.Queries
 {
@@ -21,10 +22,12 @@ namespace DataAccess.Handlers.Queries
             if (request is null)
                 throw new ArgumentNullException(nameof(request));
 
-            var task = await _context.ListTasks.FindAsync(request.id);
+            var task = await _context.ListTasks
+                .AsNoTracking()
+                .SingleOrDefaultAsync(t => t.Id == request.id);
 
             if (task is null)
-                throw new Exception("Task not found.");
+                throw new EntityNotFoundException("Task not found.");
 
             return new GetListTaskDto
             {

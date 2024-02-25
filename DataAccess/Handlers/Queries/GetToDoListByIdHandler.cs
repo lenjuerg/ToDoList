@@ -5,6 +5,7 @@ using DataAccess.EfcCode;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using ToDoListApi.ExceptionHandling.Exceptions;
 
 namespace DataAccess.Handlers.Queries
 {
@@ -46,7 +47,7 @@ namespace DataAccess.Handlers.Queries
                 .FirstOrDefaultAsync();
                 
             if (list is null)
-                throw new Exception("List not found.");
+                throw new EntityNotFoundException("List not found.");
 
             return list;
         }

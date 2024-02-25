@@ -1,4 +1,4 @@
-@ToDoListApi_HostAddress = http://localhost:5251
+@ToDoListApi_HostAddress = http://localhost:5275
 
 GET {{ToDoListApi_HostAddress}}/weatherforecast/
 Accept: application/json

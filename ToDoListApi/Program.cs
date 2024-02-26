@@ -5,11 +5,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
-using System.Net.NetworkInformation;
 using ToDoListApi.ExceptionHandling;
 using ToDoListApi.Identity;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using Swashbuckle.AspNetCore.Swagger;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -51,7 +48,7 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
-    
+
 builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));

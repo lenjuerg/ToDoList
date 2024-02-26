@@ -8,12 +8,17 @@ namespace DataAccess.EfcCode
 {
     public class DataContext : IdentityDbContext<IdentityUser>
     {
-        private readonly IUserIdentityService _identity;
+        private readonly IUserIdentityService? _identity;
 
         public DataContext(DbContextOptions<DataContext> options, IUserIdentityService identity) : base(options)
         {
             _identity = identity;
         }
+
+        public DataContext(DbContextOptions<DataContext> options) : base(options)
+        {
+        }
+
 
         public DbSet<ToDoList> ToDoLists { get; set; }
         public DbSet<ListTask> ListTasks { get; set; }
@@ -22,12 +27,14 @@ namespace DataAccess.EfcCode
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<ToDoList>()
-                .HasQueryFilter(t => t.UserId == _identity.GetUserId());
+            if (_identity is not null)
+            {
+                modelBuilder.Entity<ToDoList>()
+                    .HasQueryFilter(t => t.UserId == _identity.GetUserId());
 
-            modelBuilder.Entity<ListTask>()
-                .HasQueryFilter(t => t.ToDoList.UserId == _identity.GetUserId());
+                modelBuilder.Entity<ListTask>()
+                    .HasQueryFilter(t => t.ToDoList.UserId == _identity.GetUserId());
+            }
         }
-
     }
 }

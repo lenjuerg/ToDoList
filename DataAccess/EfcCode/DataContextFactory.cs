@@ -7,11 +7,8 @@ namespace DataAccess.EfcCode
 {
     public class DataContextFactory : IDesignTimeDbContextFactory<DataContext>
     {
-        private readonly IUserIdentityService _identity;
-
-        public DataContextFactory(IUserIdentityService identity)
+        public DataContextFactory()
         {
-            _identity = identity;
         }
 
         public DataContext CreateDbContext(string[] args)
@@ -27,7 +24,7 @@ namespace DataAccess.EfcCode
 
             dbContextBuilder.UseSqlServer(connectionString);
 
-            return new DataContext(dbContextBuilder.Options, _identity);
+            return new DataContext(dbContextBuilder.Options);
         }
     }
 }

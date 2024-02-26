@@ -1,5 +1,4 @@
 ﻿using Application.Dto.Query;
-using Application.Interfaces;
 using Application.Queries;
 using DataAccess.EfcCode;
 using MediatR;

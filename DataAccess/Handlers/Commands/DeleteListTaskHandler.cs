@@ -1,8 +1,6 @@
 ﻿using Application.Commands;
-using Application.Interfaces;
 using DataAccess.EfcCode;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using ToDoListApi.ExceptionHandling.Exceptions;
 
 namespace DataAccess.Handlers.Commands

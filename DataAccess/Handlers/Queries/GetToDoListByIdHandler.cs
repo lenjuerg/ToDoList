@@ -1,10 +1,8 @@
 ﻿using Application.Dto.Query;
-using Application.Interfaces;
 using Application.Queries;
 using DataAccess.EfcCode;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 using ToDoListApi.ExceptionHandling.Exceptions;
 
 namespace DataAccess.Handlers.Queries
@@ -45,7 +43,7 @@ namespace DataAccess.Handlers.Queries
                 })
                 .Where(l => l.Id == request.id)
                 .FirstOrDefaultAsync();
-                
+
             if (list is null)
                 throw new EntityNotFoundException("List not found.");
 
